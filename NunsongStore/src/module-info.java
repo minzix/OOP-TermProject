@@ -1,9 +1,0 @@
-/**
- * 
- */
-/**
- * @author minzi
- *
- */
-module NunsongStore {
-}
