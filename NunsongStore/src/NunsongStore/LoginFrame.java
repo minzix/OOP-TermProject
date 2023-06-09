@@ -168,11 +168,15 @@ public class LoginFrame extends JFrame {
         String username = "root";
         String password = "rlaalswl0419";
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection(url, username, password);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     private void disconnectFromDatabase() {
         if (connection != null) {
