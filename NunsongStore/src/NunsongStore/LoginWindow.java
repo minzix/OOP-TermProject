@@ -152,7 +152,8 @@ public class LoginWindow extends JFrame {
         revalidate();
         repaint();
     }
-
+    
+    //database related code starts HERE 
     private boolean validateLogin(String username, String password) {
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";
         try {
@@ -161,13 +162,11 @@ public class LoginWindow extends JFrame {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                // 사용자가 데이터베이스에 존재하면 로그인 성공
                 return true;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        // 사용자가 데이터베이스에 존재하지 않거나 비밀번호가 일치하지 않으면 로그인 실패
         return false;
     }
 
