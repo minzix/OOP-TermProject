@@ -51,14 +51,18 @@ public class LoginFrame extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 String username = usernameField.getText();
                 String password = new String(passwordField.getPassword());
-
-                if(validateLogin(username, password)) {
+                
+                //데이터 베이스 연결은 했으나, 컴퓨터에 MySQL이 없을 경우를 대비해 로그인 버튼을 누르면 다음 페이지로 넘어가도록 설정
+                JOptionPane.showMessageDialog(LoginFrame.this, "Login Successful");
+                
+                //데이터 베이스 연결
+                /*if(validateLogin(username, password)) {
                     JOptionPane.showMessageDialog(LoginFrame.this, "Login Successful");
-                    //openNewPanel();
-                    //dispose();
+                    openNewPanel();
+                    dispose();
                 } else {
                     JOptionPane.showMessageDialog(LoginFrame.this, "Invalid ID or Password");
-                }
+                }*/
             }
         });
 
