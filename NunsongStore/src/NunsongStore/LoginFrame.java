@@ -43,7 +43,8 @@ public class LoginFrame extends JFrame {
         passwordField = new JPasswordField(20);
         passwordPanel.add(passwordLabel);
         passwordPanel.add(passwordField);
-
+        
+        connectToDatabase();
         JButton loginButton = new JButton("Login");
         loginButton.addActionListener(new ActionListener() {
             @Override
