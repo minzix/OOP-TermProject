@@ -47,7 +47,7 @@ public class LoginFrame extends JFrame {
         passwordPanel.add(passwordField);
         
         connectToDatabase();
-        JButton loginButton = new JButton("Login");
+        JButton loginButton = new JButton("Login"); // 1. 로그인 버튼
         loginButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

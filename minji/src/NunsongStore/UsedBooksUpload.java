@@ -163,7 +163,7 @@ public class UsedBooksUpload extends JFrame {
         gbc.anchor = GridBagConstraints.PAGE_END;
         add(insertImageButton, gbc);
 
-        uploadButton = new JButton("업로드");
+        uploadButton = new JButton("업로드"); //4. 창을 닫는 버튼
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.gridwidth = 2;

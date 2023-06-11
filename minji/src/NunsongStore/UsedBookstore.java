@@ -34,7 +34,7 @@ public class UsedBookstore extends JFrame {
         JPanel topPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         topPanel.add(frametitle);
 
-        sellButton = new JButton("중고전공서적판매하기");
+        sellButton = new JButton("중고전공서적판매하기"); //3. usedbooksupload 클래스를 불러오는 버튼, 중고서적 업로드 기능
         sellButton.setFont(new Font("Dialog", Font.BOLD, 24));
         topPanel.add(sellButton);
         add(topPanel, BorderLayout.NORTH);
@@ -43,7 +43,6 @@ public class UsedBookstore extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UsedBooksUpload usedBooksUpload = new UsedBooksUpload();
-                //usedBooksUpload.setUploadListener(UsedBookstore.this);
                 usedBooksUpload.setVisible(true);
             }
         });
