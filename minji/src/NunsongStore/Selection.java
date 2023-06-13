@@ -1,8 +1,7 @@
 package NunsongStore;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class Selection extends JPanel {
     private JButton usedBookstoreButton;
@@ -11,11 +10,18 @@ public class Selection extends JPanel {
     public Selection() {
         setLayout(new GridLayout(1, 2));
 
-        usedBookstoreButton = new JButton("눈송중고서점");
+        ImageIcon usedBookstoreIcon = new ImageIcon("usedbook.jpeg");
+        ImageIcon jointPurchaseIcon = new ImageIcon("jointp.jpeg");
+
+        usedBookstoreButton = new JButton(usedBookstoreIcon);
         usedBookstoreButton.setPreferredSize(new Dimension(100, 100));
+        usedBookstoreButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+        usedBookstoreButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        usedBookstoreButton.setText("눈송중고서점");
         Font buttonFont = usedBookstoreButton.getFont();
-        Font largerFont = buttonFont.deriveFont(buttonFont.getSize() + 10f);
+        Font largerFont = buttonFont.deriveFont(buttonFont.getSize() + 50f);
         usedBookstoreButton.setFont(largerFont);
+        
         usedBookstoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -31,8 +37,11 @@ public class Selection extends JPanel {
         });
         add(usedBookstoreButton);
 
-        jointPurchaseButton = new JButton("눈송공구서점");
+        jointPurchaseButton = new JButton(jointPurchaseIcon);
         jointPurchaseButton.setPreferredSize(new Dimension(100, 100));
+        jointPurchaseButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+        jointPurchaseButton.setHorizontalTextPosition(SwingConstants.CENTER);
+        jointPurchaseButton.setText("눈송공구서점");
         jointPurchaseButton.setFont(largerFont);
         jointPurchaseButton.addActionListener(new ActionListener() {
             @Override
