@@ -13,6 +13,7 @@ public class Selection extends JPanel {
         setLayout(new GridLayout(1, 2));
 
         usedBookstoreButton = new JButton("눈송중고서점"); //2-1. 중고눈송서점으로 이동하는 버튼
+        usedBookstoreButton.setPreferredSize(new Dimension(300, 300));
         usedBookstoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -29,6 +30,7 @@ public class Selection extends JPanel {
         add(usedBookstoreButton);
 
         jointPurchaseButton = new JButton("눈송공구서점"); //2-2. 눈송공구서점으로 이동하는 버튼
+        jointPurchaseButton.setPreferredSize(new Dimension(300, 300));
         jointPurchaseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
