@@ -100,44 +100,53 @@ public class LoginFrame extends JFrame {
         pack();
     }
 
-    private void showSignupForm() {
-        JPanel signupPanel = new JPanel(new GridBagLayout());
-        GridBagConstraints constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets = new Insets(10, 10, 10, 10);
+private void showSignupForm() {
+    JPanel signupPanel = new JPanel(new GridBagLayout());
+    GridBagConstraints constraints = new GridBagConstraints();
+    constraints.fill = GridBagConstraints.HORIZONTAL;
+    constraints.insets = new Insets(10, 10, 10, 10);
 
-        JLabel usernameLabel = new JLabel("ID: ");
-        JTextField usernameField = new JTextField(20);
-        constraints.gridy = 1;
-        signupPanel.add(usernameLabel, constraints);
-        signupPanel.add(usernameField, constraints);
+    JLabel usernameLabel = new JLabel("ID: ");
+    JTextField usernameField = new JTextField(20);
+    constraints.gridy = 1;
+    signupPanel.add(usernameLabel, constraints);
+    signupPanel.add(usernameField, constraints);
 
-        JLabel passwordLabel = new JLabel("PW: ");
-        JPasswordField passwordField = new JPasswordField(20);
-        constraints.gridy = 2;
-        signupPanel.add(passwordLabel, constraints);
-        signupPanel.add(passwordField, constraints);
+    JLabel passwordLabel = new JLabel("PW: ");
+    JPasswordField passwordField = new JPasswordField(20);
+    constraints.gridy = 2;
+    signupPanel.add(passwordLabel, constraints);
+    signupPanel.add(passwordField, constraints);
 
-        JLabel emailLabel = new JLabel("Email: ");
-        JTextField emailField = new JTextField(20);
-        constraints.gridy = 3;
-        signupPanel.add(emailLabel, constraints);
-        signupPanel.add(emailField, constraints);
+    JLabel emailLabel = new JLabel("Email: ");
+    JTextField emailField = new JTextField(20);
+    constraints.gridy = 3;
+    signupPanel.add(emailLabel, constraints);
+    signupPanel.add(emailField, constraints);
 
-        int result = JOptionPane.showConfirmDialog(LoginFrame.this, signupPanel, "Sign Up", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+    int result = JOptionPane.showConfirmDialog(LoginFrame.this, signupPanel, "Sign Up", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
 
-        if (result == JOptionPane.OK_OPTION) {
-            String username = usernameField.getText();
-            String password = new String(passwordField.getPassword());
-            String email = emailField.getText();
+    if (result == JOptionPane.OK_OPTION) {
+        String username = usernameField.getText();
+        String password = new String(passwordField.getPassword());
+        String email = emailField.getText();
 
+        if (username.isEmpty() || password.isEmpty() || email.isEmpty()) {
+            JOptionPane.showMessageDialog(LoginFrame.this, "Please enter all information.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
             System.out.println("ID: " + username);
             System.out.println("PW: " + password);
             System.out.println("Email: " + email);
 
-            JOptionPane.showMessageDialog(LoginFrame.this, "Sign Up Successful");
+            if (saveSignupInfo(username, password, email)) {
+                JOptionPane.showMessageDialog(LoginFrame.this, "Sign Up Successful");
+            } else {
+                JOptionPane.showMessageDialog(LoginFrame.this, "Failed to sign up.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
+}
+
     
     //database related code starts HERE 
     private boolean validateLogin(String username, String password) {
