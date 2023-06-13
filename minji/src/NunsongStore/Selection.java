@@ -1,5 +1,4 @@
 package NunsongStore;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,8 +11,11 @@ public class Selection extends JPanel {
     public Selection() {
         setLayout(new GridLayout(1, 2));
 
-        usedBookstoreButton = new JButton("눈송중고서점"); //2-1. 중고눈송서점으로 이동하는 버튼
-        usedBookstoreButton.setPreferredSize(new Dimension(300, 300));
+        usedBookstoreButton = new JButton("눈송중고서점");
+        usedBookstoreButton.setPreferredSize(new Dimension(100, 100));
+        Font buttonFont = usedBookstoreButton.getFont();
+        Font largerFont = buttonFont.deriveFont(buttonFont.getSize() + 10f);
+        usedBookstoreButton.setFont(largerFont);
         usedBookstoreButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -29,8 +31,9 @@ public class Selection extends JPanel {
         });
         add(usedBookstoreButton);
 
-        jointPurchaseButton = new JButton("눈송공구서점"); //2-2. 눈송공구서점으로 이동하는 버튼
-        jointPurchaseButton.setPreferredSize(new Dimension(300, 300));
+        jointPurchaseButton = new JButton("눈송공구서점");
+        jointPurchaseButton.setPreferredSize(new Dimension(100, 100));
+        jointPurchaseButton.setFont(largerFont);
         jointPurchaseButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
