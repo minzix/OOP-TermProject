@@ -11,6 +11,8 @@ import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 import java.awt.geom.Ellipse2D;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 
 public class UsedBooksUpload extends JFrame {
     private JLabel titleLabel;
@@ -26,17 +28,20 @@ public class UsedBooksUpload extends JFrame {
     private JLabel descriptionLabel;
     private JTextArea descriptionTextArea;
     private JButton uploadButton;
-    private DefaultListModel<String> uploadedListModel;
-    private JList<String> uploadedList;
+    private JLabel imageLabel;
+    private JButton insertImageButton;
+    private String selectedImagePath;
+    private UsedBookstore usedBookstore;
 
-    public UsedBooksUpload() {
-        setTitle("Used Books Upload");
+    public UsedBooksUpload(UsedBookstore usedBookstore) {
+    	this.usedBookstore = usedBookstore;
+    	
+    	setTitle("Used Books Upload");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(5, 5, 5, 5);
 
-        // 책 제목
         titleLabel = new JLabel("책 제목");
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -49,7 +54,6 @@ public class UsedBooksUpload extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         add(titleTextField, gbc);
 
-        // 과목명
         subjectLabel = new JLabel("과목명");
         gbc.gridx = 0;
         gbc.gridy = 1;
@@ -96,7 +100,6 @@ public class UsedBooksUpload extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         add(subjectComboBox, gbc);
 
-        // 책 상태
         conditionLabel = new JLabel("책 상태");
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -115,17 +118,15 @@ public class UsedBooksUpload extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         add(conditionComboBox, gbc);
 
-        // 물음표 이미지 넣기
-        ImageIcon conditionImageIcon = createCircularImageIcon("src/image/questionmark.PNG", 20); 
+        ImageIcon conditionImageIcon = createCircularImageIcon("src/image/q.PNG", 20);
         JLabel conditionImageLabel = new JLabel(conditionImageIcon);
         gbc.gridx = 2;
         gbc.gridy = 2;
         gbc.anchor = GridBagConstraints.WEST;
-        add(conditionImageLabel, gbc); 
+        add(conditionImageLabel, gbc);
 
-        conditionImageLabel.setToolTipText("");
+        conditionImageLabel.setToolTipText("<html>최상: 새것에 가까운 책, 변색이나 찢어진 흔적, <br>닳은 흔적, 낙서나 얼룩이 없는 상태이다. <br>상: 약간의 사용감은 있으나 깨끗한 책.  희미한 변색이나 작은 얼룩이 있고, <br>찢어진 흔적은 없으며 밑줄을 그은 정도의 필기가 되어있는 상태이다.<br> 중: 전체적인 변색이나 오염이 있고, <br>찢어진 흔적이 있으며 낙서가 있음.<br></html>");
 
-        // 정가
         priceLabel = new JLabel("정가");
         gbc.gridx = 0;
         gbc.gridy = 3;
@@ -138,7 +139,6 @@ public class UsedBooksUpload extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         add(priceTextField, gbc);
 
-        // 희망판매가
         desiredPriceLabel = new JLabel("희망판매가");
         gbc.gridx = 0;
         gbc.gridy = 4;
@@ -151,7 +151,6 @@ public class UsedBooksUpload extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         add(desiredPriceTextField, gbc);
 
-        // 설명
         descriptionLabel = new JLabel("설명");
         gbc.gridx = 0;
         gbc.gridy = 5;
@@ -166,40 +165,108 @@ public class UsedBooksUpload extends JFrame {
         gbc.anchor = GridBagConstraints.WEST;
         add(descriptionScrollPane, gbc);
 
-        // 업로드버튼
-        uploadButton = new JButton("업로드");
+        imageLabel = new JLabel();
+        imageLabel.setPreferredSize(new Dimension(150, 150));
+        imageLabel.setBackground(Color.LIGHT_GRAY);
+        imageLabel.setOpaque(true);
+        imageLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                selectImage();
+            }
+        });
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        gbc.gridheight = 6;
+        gbc.anchor = GridBagConstraints.CENTER;
+        add(imageLabel, gbc);
+
+        insertImageButton = new JButton("이미지 삽입");
+        insertImageButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                selectImage();
+            }
+        });
+        gbc.gridx = 2;
+        gbc.gridy = 6;
+        gbc.gridheight = 1;
+        gbc.anchor = GridBagConstraints.PAGE_END;
+        add(insertImageButton, gbc);
+
+        uploadButton = new JButton("업로드"); 
         gbc.gridx = 0;
         gbc.gridy = 6;
         gbc.gridwidth = 2;
         gbc.anchor = GridBagConstraints.CENTER;
         add(uploadButton, gbc);
 
-        // 최상, 상, 중 상태 설명
-        conditionImageLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                conditionImageLabel.setToolTipText("<html>최상: 새것에 가까운 책, 변색이나 찢어진 흔적, <br>닳은 흔적, 낙서나 얼룩이 없는 상태이다. <br>상: 약간의 사용감은 있으나 깨끗한 책.  희미한 변색이나 작은 얼룩이 있고, <br>찢어진 흔적은 없으며 밑줄을 그은 정도의 필기가 되어있는 상태이다.<br> 중: 전체적인 변색이나 오염이 있고, <br>찢어진 흔적이 있으며 낙서가 있음.<br></html>");
-            }
-        });
-
-        // 저장하기
         uploadButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-                String bookInfo = "제목: " + titleTextField.getText() + ", " +
-                        "과목: " + subjectComboBox.getSelectedItem() + ", " +
-                        "책 상태: " + conditionComboBox.getSelectedItem() + ", " +
-                        "정가: " + priceTextField.getText() + ", " +
-                        "희망가: " + desiredPriceTextField.getText() + ", " +
-                        "설명: " + descriptionTextArea.getText();
-
-                uploadedListModel.addElement(bookInfo);
+                BookInfo bookInfo = new BookInfo(
+                        titleTextField.getText(),
+                        (String) subjectComboBox.getSelectedItem(),
+                        (String) conditionComboBox.getSelectedItem(),
+                        priceTextField.getText(),
+                        desiredPriceTextField.getText(),
+                        descriptionTextArea.getText(),
+                        selectedImagePath
+                );
+                usedBookstore.updateBookInfo(bookInfo);
+                dispose(); 
             }
         });
 
         pack();
         setLocationRelativeTo(null);
-        setVisible(true);
+    }
+
+    public class BookInfo {
+        private String title;
+        private String subject;
+        private String condition;
+        private String price;
+        private String desiredPrice;
+        private String description;
+        private String imagePath;
+
+        public BookInfo(String title, String subject, String condition, String price, String desiredPrice, String description, String imagePath) {
+            this.title = title;
+            this.subject = subject;
+            this.condition = condition;
+            this.price = price;
+            this.desiredPrice = desiredPrice;
+            this.description = description;
+            this.imagePath = imagePath;
+        }
+        
+        public String getTitle() {
+            return title;
+        }
+
+        public String getSubject() {
+            return subject;
+        }
+
+        public String getCondition() {
+            return condition;
+        }
+
+        public String getPrice() {
+            return price;
+        }
+
+        public String getDesiredPrice() {
+            return desiredPrice;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        public String getImagePath() {
+            return imagePath;
+        }
+
     }
 
     private ImageIcon createCircularImageIcon(String imagePath, int size) {
@@ -227,11 +294,32 @@ public class UsedBooksUpload extends JFrame {
         return resizedImage;
     }
 
+    private void selectImage() {
+        JFileChooser fileChooser = new JFileChooser();
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("이미지 파일", "jpg", "jpeg", "png", "gif");
+        fileChooser.setFileFilter(filter);
+
+        int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = fileChooser.getSelectedFile();
+            selectedImagePath = file.getAbsolutePath();
+
+            try {
+                BufferedImage image = ImageIO.read(file);
+                ImageIcon imageIcon = new ImageIcon(image.getScaledInstance(
+                        imageLabel.getWidth(), imageLabel.getHeight(), Image.SCALE_SMOOTH));
+                imageLabel.setIcon(imageIcon);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new UsedBooksUpload();
+                new UsedBookstore();
             }
         });
     }
